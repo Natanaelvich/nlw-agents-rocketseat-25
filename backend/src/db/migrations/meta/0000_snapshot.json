@@ -1,11 +1,11 @@
 {
-  "id": "844c8c13-f975-401d-a1c2-c41ac6061ae6",
+  "id": "b5169c49-1fb3-4971-9599-c97b08b9c3e4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.subscriptions": {
-      "name": "subscriptions",
+    "public.rooms": {
+      "name": "rooms",
       "schema": "",
       "columns": {
         "id": {
@@ -21,15 +21,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "email": {
-          "name": "email",
+        "description": {
+          "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp with time zone",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
@@ -38,15 +38,7 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "subscriptions_email_unique": {
-          "name": "subscriptions_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

@@ -1,48 +1,37 @@
 import { fastifyCors } from '@fastify/cors'
-import { fastifySwagger } from '@fastify/swagger'
-import { fastifySwaggerUi } from '@fastify/swagger-ui'
+import { fastifyMultipart } from '@fastify/multipart'
 import { fastify } from 'fastify'
 import {
-  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
+  type ZodTypeProvider,
 } from 'fastify-type-provider-zod'
-import { env } from './env'
-import { accessInviteLinkRoute } from './routes/access-invite-link-route'
-import { getRankingRoute } from './routes/get-ranking-route'
-import { getSubscriberInvitesClicksRoute } from './routes/get-subscriber-invites-clicks-route'
-import { getSubscriberInvitesCountRoute } from './routes/get-subscriber-invites-count-route'
-import { getSubscriberRankingPositionRoute } from './routes/get-subscriber-ranking-position'
-import { subscribeToEventRoute } from './routes/subscribe-to-event-route'
+import { env } from './env.ts'
+import { createQuestionRoute } from './http/routes/create-question.ts'
+import { createRoomRoute } from './http/routes/create-room.ts'
+import { getRoomQuestions } from './http/routes/get-room-questions.ts'
+import { getRoomsRoute } from './http/routes/get-rooms.ts'
+import { uploadAudioRoute } from './http/routes/upload-audio.ts'
 
-const app = fastify()
+const app = fastify().withTypeProvider<ZodTypeProvider>()
+
+app.register(fastifyCors, {
+  origin: 'http://localhost:5173',
+})
+
+app.register(fastifyMultipart)
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
 
-app.register(fastifyCors)
-
-app.register(fastifySwagger, {
-  openapi: {
-    info: {
-      title: 'NLW Connect',
-      version: '0.1',
-    },
-  },
-  transform: jsonSchemaTransform,
+app.get('/health', () => {
+  return 'OK'
 })
 
-app.register(fastifySwaggerUi, {
-  routePrefix: '/docs',
-})
+app.register(getRoomsRoute)
+app.register(createRoomRoute)
+app.register(getRoomQuestions)
+app.register(createQuestionRoute)
+app.register(uploadAudioRoute)
 
-app.register(subscribeToEventRoute)
-app.register(accessInviteLinkRoute)
-app.register(getRankingRoute)
-app.register(getSubscriberInvitesCountRoute)
-app.register(getSubscriberInvitesClicksRoute)
-app.register(getSubscriberRankingPositionRoute)
-
-app.listen({ port: env.PORT }).then(() => {
-  console.log('HTTP server running!')
-})
+app.listen({ port: env.PORT })

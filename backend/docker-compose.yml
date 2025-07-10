@@ -1,18 +1,11 @@
 services:
-  connect-pg:
-    image: bitnami/postgresql:latest
-    ports:
-      - '5432:5432'
+  nlw-agents-pg:
+    image: pgvector/pgvector:pg17
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=connect
-
-  connect-redis:
-    image: bitnami/redis:latest
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: agents
     ports:
-      - "6379:6379"
-
-
+      - "5432:5432"
+    volumes:
+      - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
