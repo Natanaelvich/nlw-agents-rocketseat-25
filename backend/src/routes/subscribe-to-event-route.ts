@@ -1,6 +1,5 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { EmailAlreadyExists } from '../functions/errors/email-already-exists'
 import { subscribeToEvent } from '../functions/subscribe-to-event'
 
 export const subscribeToEventRoute: FastifyPluginAsyncZod = async app => {
@@ -25,21 +24,14 @@ export const subscribeToEventRoute: FastifyPluginAsyncZod = async app => {
     async (request, reply) => {
       const { name, email, referrer } = request.body
 
-      try {
-        const { subscriberId } = await subscribeToEvent({
-          name,
-          email,
-          invitedBySubscriberId: referrer || null,
-        })
+      const { subscriberId } = await subscribeToEvent({
+        name,
+        email,
+        invitedBySubscriberId: referrer || null,
+      })
 
-        return reply.status(201).send({ subscriberId })
-      } catch (err) {
-        if (err instanceof EmailAlreadyExists) {
-          return reply.status(409).send({ message: err.message })
-        }
 
-        throw err
-      }
+      return reply.status(201).send({ subscriberId })
     }
   )
 }
