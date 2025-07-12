@@ -22,6 +22,23 @@ NLW Agents is a comprehensive platform that combines event registration with ref
 - **Modern Frontend** - React 19 with TypeScript and TailwindCSS
 - **Container Support** - Docker Compose for easy deployment
 
+## 📸 Screenshots
+
+### 🏠 Home Page - Room Listing
+![Home Page](.doc/images/image.png)
+
+### 🏆 Room Question
+![Ranking System](.doc/images/image2.png)
+
+### 🎤 Room Audio Recording
+![Q&A Room](.doc/images/image3.png)
+
+### 📋 Table Questions
+![Audio Recording](.doc/images/image4.png)
+
+### 📋 Table Chunkings Audio
+![Create Room](.doc/images/image5.png)
+
 ## 🛠️ Tech Stack
 
 ### Backend
